@@ -102,7 +102,7 @@ def goods(request):
 
 
         print(cost_float) 
-        cost_val = str(cost_float)
+        cost_val = str(round(cost_float,2))
         context = {
                 'calc_form' : calc_form,
                 'cost_val' : cost_val,
@@ -203,7 +203,7 @@ def service(request):
             
                     cost_float = cost_float/(1 - target_percentage)
                     '''
-                    
+
                     print(cost_float)
 
                 
@@ -229,7 +229,7 @@ def service(request):
 
 
         print(cost_float) 
-        cost_val = str(cost_float)
+        cost_val = str(round(cost_float,2))
         context = {
                 'calc_form' : calc_form,
                 'cost_val' : cost_val,
