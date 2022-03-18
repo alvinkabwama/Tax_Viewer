@@ -25,7 +25,9 @@ SECRET_KEY = '!ie+$fjyy^sidkla4@et*m^vc!yda_g+c0s3uihb3wzr5jhpm6'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['http://taxingtool.pythonanywhere.com',
+'127.0.0.1'
+]
 
 
 # Application definition
@@ -124,3 +126,5 @@ STATICFILES_DIRS = [
         os.path.join(BASE_DIR, 'static'),
         '/var/www/static/',
         ]
+
+RESOURCES = os.path.join(BASE_DIR, 'resources')

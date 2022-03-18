@@ -1,7 +1,6 @@
 from django import forms
 
-class CalcForm(forms.Form):
-    cost_value = forms.CharField()
+class SelectForm(forms.Form):
     
     item_option = (
         ('', ''),
@@ -10,6 +9,64 @@ class CalcForm(forms.Form):
     ) 
     item_selection = forms.CharField(widget=forms.Select(choices=item_option), label = 'Item Selection')
 
+
+class CalcForm(forms.Form):
+    cost_value = forms.CharField()
+
+    wht_option = (
+        ('', ''),
+        ('Yes', 'Yes'),
+        ('No', 'No')   
+    ) 
+    wht_included = forms.CharField(widget=forms.Select(choices=wht_option), label = 'WHT Selection')
+
+    vatable_option = (
+        ('', ''),
+        ('Yes', 'Yes'),
+        ('No', 'No')   
+    ) 
+    vatable_selection = forms.CharField(widget=forms.Select(choices=vatable_option),label = 'VATable Selection')
+
+    vatreg_option = (
+        ('', ''),
+        ('Yes', 'Yes'),
+        ('No', 'No')   
+    ) 
+    vatreg_selection = forms.CharField(widget=forms.Select(choices=vatreg_option), label = 'VATreg Selection')
+
+
+    supplier_country_option = (
+        ('', ''),
+         ('Uganda', 'Uganda'),
+        ('Denmark', 'Denmark'),
+        ('India', 'India') ,
+        ('Italy', 'taly'),
+        ('Mauritius', 'Mauritius'),  
+        ('Netherlands', 'Netherlands'),
+        ('Norway', 'Norway') ,
+        ('South Africa', 'South Africa'),
+        ('Other', 'Other'),   
+    ) 
+    supplier_country = forms.CharField(widget=forms.Select(choices=supplier_country_option), label = 'Supplier Country')
+
+   
+    
+    
+
+
+
+'''
+class CalcForm(forms.Form):
+    cost_value = forms.CharField()
+
+    item_option = (
+        ('', ''),
+        ('Good', 'Good'),
+        ('Service', 'Service')   
+    ) 
+    item_selection = forms.CharField(widget=forms.Select(choices=item_option), label = 'Item Selection')
+
+    
     supplier_option = (
         ('', ''),
         ('Local', 'Local'),
@@ -37,7 +94,7 @@ class CalcForm(forms.Form):
         ('No', 'No')   
     ) 
     vatreg_selection = forms.CharField(widget=forms.Select(choices=vatreg_option), label = 'VATreg Selection')
-
+'''
    
     
     

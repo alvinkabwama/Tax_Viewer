@@ -18,5 +18,7 @@ from . import views
 
 urlpatterns = [
     path('calcapi', views.calcapi, name='calcapi'),
+    path('goods', views.goods, name='goods'),
+    path('service', views.service, name='service'),
     
 ]

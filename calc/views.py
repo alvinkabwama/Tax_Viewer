@@ -1,6 +1,8 @@
 from telnetlib import EL
-from django.shortcuts import render
-from .forms import CalcForm
+from django.shortcuts import redirect, render
+
+from Tax_viewer.settings import RESOURCES
+from .forms import CalcForm, SelectForm
 from django.core.files.storage import FileSystemStorage
 from django.conf import settings
 import os
@@ -8,7 +10,253 @@ import pandas as pd
 
 
 
+
+
 # Create your views here.
+
+#VIEW FOR SELECTING THE SERVICE TYPE
+def calcapi(request):
+    if(request.method == 'POST'):
+
+       
+        select_form = SelectForm(request.POST)
+
+        if select_form.is_valid():
+            item_selection = select_form.cleaned_data.get('item_selection')
+            
+            #GOOD SELECTION
+            if item_selection == 'Good':
+
+                response = redirect(goods)
+                return response
+  
+            #SERVICE SELECTION
+            else:
+                response = redirect(service)
+                return response
+
+    else:      
+        select_form = SelectForm()
+        
+        context = {
+                    'calc_form' : select_form,
+                    
+        }
+        return render(request, 'selection_view.html', context)
+
+
+
+#VIEW FOR THE GOODS
+def goods(request):
+    if(request.method == 'POST'):
+
+        #FORM FOR CAPTURING THE DATA
+        calc_form = CalcForm(request.POST)
+
+        if calc_form.is_valid():
+            cost_value = calc_form.cleaned_data.get('cost_value')
+            supplier_country = calc_form.cleaned_data.get('supplier_country')
+            wht_included = calc_form.cleaned_data.get('wht_included')
+            vatable_selection = calc_form.cleaned_data.get('vatable_selection')
+            vatreg_selection = calc_form.cleaned_data.get('vatreg_selection')
+
+            #print(supplier_country)
+            #print(wht_included)
+            #print(vatable_selection)
+            #print(vatreg_selection)
+            
+            cost_float = float(cost_value)
+
+        
+            #CASE FOR LOCAL SUPPLIER
+            if supplier_country == 'Uganda':
+
+                #CASE FOR WHT TAX INCLUDED
+                if wht_included == 'Yes':
+                    cost_float = cost_float
+                else:
+                    cost_float = cost_float/0.94
+                    print(cost_float)
+
+                
+                #CHECKING IF THE GOOD IS VATABLE SUPPLY
+                if vatable_selection == 'Yes':
+
+                    #CHECK IF SUPLLIER IS ON LIST OF VAT REGISTERED SUPPLIERS
+                    if  vatreg_selection == 'Yes':
+                            cost_float = cost_float*1.18
+
+                    else:
+                        cost_float = cost_float
+
+                else:
+                    cost_float = cost_float
+
+
+            #WHEN THE SUPPLIER OF THE GOOD IS A FOREIGN
+            else:
+
+                return render(request, 'goods_foreign.html')
+
+                print()
+
+
+        print(cost_float) 
+        cost_val = str(cost_float)
+        context = {
+                'calc_form' : calc_form,
+                'cost_val' : cost_val,
+        }
+                            
+        print(cost_float)        
+        return render(request, 'dataview.html', context)
+
+
+    else:        
+        calc_form = CalcForm()
+        
+        cost_val = 0
+        context = {
+                    'calc_form' : calc_form,
+                    'cost_val' : cost_val,
+                    
+        }
+
+        return render(request, 'dataview.html', context)
+
+
+#VIEW FOR THE SERVICES
+def service(request):
+    if(request.method == 'POST'):
+
+        #FORM FOR CAPTURING THE DATA
+        calc_form = CalcForm(request.POST)
+
+        if calc_form.is_valid():
+            cost_value = calc_form.cleaned_data.get('cost_value')
+            supplier_country = calc_form.cleaned_data.get('supplier_country')
+            wht_included = calc_form.cleaned_data.get('wht_included')
+            vatable_selection = calc_form.cleaned_data.get('vatable_selection')
+            vatreg_selection = calc_form.cleaned_data.get('vatreg_selection')
+
+            #print(supplier_country)
+            #print(wht_included)
+            #print(vatable_selection)
+            #print(vatreg_selection)
+            
+            cost_float = float(cost_value)
+
+        
+            #CASE FOR LOCAL SUPPLIER
+            if supplier_country == 'Uganda':
+
+                #CASE FOR WHT TAX INCLUDED
+                if wht_included == 'Yes':
+                    cost_float = cost_float
+                else:
+                    cost_float = cost_float/0.94
+                    print(cost_float)
+
+                
+                #CHECKING IF THE GOOD IS VATABLE SUPPLY
+                if vatable_selection == 'Yes':
+
+                    #CHECK IF SUPLLIER IS ON LIST OF VAT REGISTERED SUPPLIERS
+                    if  vatreg_selection == 'Yes':
+                            cost_float = cost_float*1.18
+
+                    else:
+                        cost_float = cost_float
+
+                else:
+                    cost_float = cost_float
+
+
+            #WHEN THE SUPPLIER OF THE SERVICE IS FOREIGN
+            else:
+
+                #CASE FOR WHT TAX INCLUDED
+                if wht_included == 'Yes':
+                    cost_float = cost_float
+
+                #WHEN WITHHOLDING TAX IS NOT INCLUDED AND HAS TO BE CALCULATED BY COUNTRY
+                else:
+                    #THESE ARE FOR COUNTRIES WHERE WHT IS 10 PERCENT
+                    if supplier_country == 'Other':
+
+                        cost_float = cost_float/0.9
+                    #FOR COUNTRIES WHERE WITHHOLDINH TAX IS 15 PERCENT
+                    else:
+                        cost_float = cost_float/0.85
+   
+                    #READING THE DIFFERENT COUNTRY WITHHOLDING TAX DATA
+
+                    '''
+                    resource_path = os.path.join(RESOURCES, 'WHT_rates.xlsx')
+                    wht_df = pd.read_excel(resource_path)
+                    
+                    country_list = list(wht_df['All Countries'])
+                    percentage_list = list(wht_df['Percentage'])
+                    
+                    country_index = country_list.index(supplier_country)
+                    target_percentage = percentage_list[country_index]
+            
+                    cost_float = cost_float/(1 - target_percentage)
+                    '''
+                    
+                    print(cost_float)
+
+                
+                #CHECKING IF THE GOOD IS VATABLE SUPPLY
+                if vatable_selection == 'Yes':
+
+                    #CHECK IF SUPLLIER IS ON LIST OF VAT REGISTERED SUPPLIERS
+                    if  vatreg_selection == 'Yes':
+                            cost_float = cost_float*1.18
+
+                    else:
+                        cost_float = cost_float
+
+                else:
+                    cost_float = cost_float*1.18
+                    
+
+                    
+                #return render(request, 'goods_foreign.html')
+
+                print()
+
+
+
+        print(cost_float) 
+        cost_val = str(cost_float)
+        context = {
+                'calc_form' : calc_form,
+                'cost_val' : cost_val,
+        }
+                            
+        print(cost_float)        
+        return render(request, 'dataview.html', context)
+
+
+    else:        
+        calc_form = CalcForm()
+        
+        cost_val = 0
+        context = {
+                    'calc_form' : calc_form,
+                    'cost_val' : cost_val,
+                    
+        }
+
+        return render(request, 'dataview.html', context)
+
+
+
+
+
+
+'''
 def calcapi(request):
     if(request.method == 'POST'):
 
@@ -23,14 +271,12 @@ def calcapi(request):
             vatable_selection = calc_form.cleaned_data.get('vatable_selection')
             vatreg_selection = calc_form.cleaned_data.get('vatreg_selection')
 
-            '''
+            
             print(item_selection)
             print(supplier_selection)
             print(wht_included)
             print(vatable_selection)
             print(vatreg_selection)
-            '''
-
             
             cost_float = float(cost_value)
 
@@ -62,8 +308,84 @@ def calcapi(request):
                         cost_float = cost_float
 
 
+                #WHEN THE SUPPLIER OF THE GOOD IS A FOREIGN
+                else:
+                    return render(request, 'goods_foreign.html')
+
+                    print()
+
+
+
+
+
             #CASE FOR WHEN IT IS A SERVICE.
             else:
+
+                if supplier_selection == "Local":
+ 
+                    #CASE FOR WHT TAX INCLUDED
+                    if wht_included == 'Yes':
+                        cost_float = cost_float
+                    else:
+                        cost_float = cost_float/0.94
+                        print(cost_float)
+
+                    
+                    #CHECKING IF THE GOOD IS VATABLE SUPPLY
+                    if vatable_selection == 'Yes':
+
+                        #CHECK IF SUPLLIER IS ON LIST OF VAT REGISTERED SUPPLIERS
+                        if  vatreg_selection == 'Yes':
+                             cost_float = cost_float*1.18
+
+                        else:
+                            cost_float = cost_float
+
+                    else:
+                        cost_float = cost_float
+
+                #CASE FOR WHEN THE SERVICE IS FOREIGN
+                else:
+
+                    if wht_included == 'Yes':
+                        cost_float = cost_float
+
+                    #HERE WE LOOK AT THE COUNTRIES WITH THE DIFFERENT WHT VALUES
+                    else:
+                        cost_float = cost_float/0.94
+                        print(cost_float)
+
+
+
+
+
+
+
+                        #CHECKING IF THE GOOD IS VATABLE SUPPLY
+                    if vatable_selection == 'Yes':
+
+                        #CHECK IF SUPLLIER IS ON LIST OF VAT REGISTERED SUPPLIERS
+                        if  vatreg_selection == 'Yes':
+                             cost_float = cost_float*1.18
+
+                        else:
+                            cost_float = cost_float
+
+                    else:
+                        cost_float = cost_float
+
+
+
+
+
+
+
+
+
+                    return render(request, 'service_foreign.html')
+
+                    
+                
 
                 print()
 
@@ -94,3 +416,4 @@ def calcapi(request):
 
         return render(request, 'dataview.html', context)
 
+'''
