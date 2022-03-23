@@ -9,16 +9,24 @@ class SelectForm(forms.Form):
     ) 
     item_selection = forms.CharField(widget=forms.Select(choices=item_option), label = 'Item Selection')
 
+    supplier_option = (
+        ('', ''),
+        ('Local', 'Local'),
+        ('Foreign', 'Foreign')   
+    ) 
+    supplier_selection = forms.CharField(widget=forms.Select(choices=supplier_option), label = 'Supplier Location')
+
+    
 
 class CalcForm(forms.Form):
     cost_value = forms.CharField()
-
+ 
     wht_option = (
         ('', ''),
         ('Yes', 'Yes'),
         ('No', 'No')   
     ) 
-    wht_included = forms.CharField(widget=forms.Select(choices=wht_option), label = 'WHT Selection')
+    wht_included = forms.CharField(widget=forms.Select(choices=wht_option), label = 'Is WHT included in amount')
 
     vatable_option = (
         ('', ''),
@@ -35,12 +43,17 @@ class CalcForm(forms.Form):
     vatreg_selection = forms.CharField(widget=forms.Select(choices=vatreg_option), label = 'VATreg Selection')
 
 
+
+
+class ForeignServiceForm(forms.Form):
+    cost_value = forms.CharField()
+ 
+
     supplier_country_option = (
         ('', ''),
-         ('Uganda', 'Uganda'),
         ('Denmark', 'Denmark'),
         ('India', 'India') ,
-        ('Italy', 'taly'),
+        ('Italy', 'Italy'),
         ('Mauritius', 'Mauritius'),  
         ('Netherlands', 'Netherlands'),
         ('Norway', 'Norway') ,
@@ -49,8 +62,14 @@ class CalcForm(forms.Form):
     ) 
     supplier_country = forms.CharField(widget=forms.Select(choices=supplier_country_option), label = 'Supplier Country')
 
+    wht_option = (
+        ('', ''),
+        ('Yes', 'Yes'),
+        ('No', 'No')   
+    ) 
+    wht_included = forms.CharField(widget=forms.Select(choices=wht_option), label = 'Is WHT included in amount')
+
    
-    
     
 
 

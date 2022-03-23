@@ -9,6 +9,9 @@ a:hover {
   color: #fff;
 }
 
+h1{
+    font-size: 1.5rem !important;
+}
 /* Custom default button */
 .btn-secondary,
 .btn-secondary:hover,
@@ -42,8 +45,23 @@ body {
   box-shadow: inset 0 0 5rem rgba(0, 0, 0, .5);
 }
 
+
 .cover-container {
-  max-width: 42em;
+/*  max-width: 80em;*/
+  width: 100%;
+  background: #F5F6F7 !important;
+  padding: 0 !important;
+  -webkit-box-shadow: 10px 10px 17px -6px rgba(0,0,0,0.75);
+  -moz-box-shadow: 10px 10px 17px -6px rgba(0,0,0,0.75);
+  box-shadow: 10px 10px 17px -6px rgba(0,0,0,0.75)
+}
+
+.logo{
+    height: 4.5rem;
+    padding-left: 2.5rem;
+    text-align: left;
+    margin-top: -60px !important;
+    
 }
 
 
@@ -51,11 +69,30 @@ body {
  * Header
  */
 .masthead {
-  margin-bottom: 2rem;
-}
+/*
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+*/
+  margin-bottom: 2rem;  
+  margin-top: 0px !important;
+/*  background: #008F3B !important;*/
+  height:80px
+  /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#1e5799+26,8ec63e+100 */
+ background: #1e5799; /* Old browsers */
+ background: -moz-linear-gradient(top,  #6c90b5  26%, #325d8e 100%); /* FF3.6-15 */
+ background: -webkit-linear-gradient(top,  #6c90b5  26%,#325d8e 100%); /* Chrome10-25,Safari5.1-6 */
+ background: linear-gradient(to bottom,  #6c90b5  26%,#325d8e 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#6c90b5 ', endColorstr='#325d8e',GradientType=0 ); 
+
+    }
 
 .masthead-brand {
   margin-bottom: 0;
+}
+#main_heading{
+    font-size: 1.5rem !important;
+    text-shadow: rgba(0, 0, 0, 0.5) 0px 0.05rem 0.1rem;
+
 }
 
 .nav-masthead .nav-link {
@@ -99,7 +136,19 @@ body {
 .cover .btn-lg {
   padding: .75rem 1.25rem;
   font-weight: 700;
+  background: #F5F6F7;
+ -webkit-box-shadow: 10px 10px 17px -6px rgba(0,0,0,0.75);
+ -moz-box-shadow: 10px 10px 17px -6px rgba(0,0,0,0.75);
+  box-shadow: 10px 10px 17px -6px rgba(0,0,0,0.75)
 }
+.cover-heading{
+    color: black;
+}
+.btn{
+    color: black;
+}
+
+lable
 
 
 /*
@@ -107,4 +156,30 @@ body {
  */
 .mastfoot {
   color: rgba(255, 255, 255, .5);
+}
+.submit{
+    
+    max-width: 40em ;
+    border-radius: 10px;
+    background: #C1C2C3;
+    margin: 0 auto;
+    padding:  1.5rem;
+    -webkit-box-shadow: 10px 10px 17px -6px rgba(0,0,0,0.75);
+    -moz-box-shadow: 10px 10px 17px -6px rgba(0,0,0,0.75);
+    box-shadow: 10px 10px 17px -6px rgba(0,0,0,0.75)
+}
+
+.masthead {
+    background: #fff;
+}
+
+
+.top-bar {
+    background: #175CA5;
+    height: 35px;
+    line-height: 35px;
+}
+
+.cover-heading {
+    color: #175CA5;
 }
